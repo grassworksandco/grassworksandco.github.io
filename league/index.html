@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team Trivia League | Grassworks &amp; Co</title>
+<meta name="description" content="A branded four-week trivia league for your team: daily questions, a live leaderboard by person and department, and a winner list.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Grassworks &amp; Co">
+<meta property="og:title" content="Team Trivia League | Grassworks &amp; Co">
+<meta property="og:description" content="A branded four-week trivia league for your team: daily questions, a live leaderboard by person and department, and a winner list.">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0b2024">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230b2024%22%2F%3E%3Cg%20transform%3D%22translate%285%205%29%20scale%28.69%29%22%3E%3Crect%20x%3D%224%22%20y%3D%2216%22%20width%3D%226%22%20height%3D%2212%22%20rx%3D%222%22%20fill%3D%22%23ff8f66%22%2F%3E%3Crect%20x%3D%2213%22%20y%3D%226%22%20width%3D%226%22%20height%3D%2222%22%20rx%3D%222%22%20fill%3D%22%23ff8f66%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%2211%22%20width%3D%226%22%20height%3D%2217%22%20rx%3D%222%22%20fill%3D%22%23ff8f66%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  color-scheme: dark;
+  --night:#0b2024;    
+  --dusk:#133238;      
+  --line:#24525a;      
+  --moon:#f3ead7;       
+  --haze:#a9b7d0;       
+  --lantern:#ff8f66; 
+  --on-lantern:#2b0f04;
+  --good:#4fc08d; --bad:#e2685c;
+  --display:"Reem Kufi","IBM Plex Sans Arabic","IBM Plex Sans",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic","IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  
+  --q-bg:#0f2a30; --q-card:#19414a; --q-accent:#ff8f66; --q-ink:#eef6f4; --q-on:#2b0f04;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--moon);font-family:var(--body);font-size:17px;line-height:1.7;
+  background-image:radial-gradient(1200px 500px at 85% -10%,rgba(255,143,102,.13),transparent 60%),radial-gradient(900px 500px at 0% 0%,rgba(40,140,150,.18),transparent 60%);background-repeat:no-repeat}
+h1,h2,h3{font-family:var(--display);line-height:1.3;margin:0;text-wrap:balance;font-weight:700}
+p{margin:0}
+a{color:var(--lantern)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--lantern);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0}
+.mark{font-family:var(--display);font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px}
+.mark svg{width:26px;height:26px;flex:none}
+.lang{background:transparent;color:var(--moon);border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-size:.9rem}
+.lang:hover{border-color:var(--lantern)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:start;padding:28px 0 56px}
+.status{display:inline-block;border:1px solid var(--lantern);color:var(--lantern);border-radius:999px;padding:3px 14px;font-size:.82rem;font-weight:600;margin-bottom:18px}
+h1{font-size:clamp(2rem,5.4vw,3.1rem)}
+.lede{color:var(--haze);font-size:1.08rem;margin-top:16px;max-width:34em}
+.points{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
+.points li{display:flex;gap:12px;align-items:flex-start}
+.points li::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:var(--lantern);margin-top:.62em}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-block;background:var(--lantern);color:var(--on-lantern);font-weight:700;border:0;border-radius:12px;padding:12px 22px;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--moon);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.07)}
+.btn.try{display:none}
+
+.demo{display:grid;gap:14px;justify-items:center;scroll-margin-top:16px}
+.skins{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;font-size:.88rem;color:var(--haze)}
+.skin{display:inline-flex;align-items:center;gap:8px;background:var(--dusk);color:var(--moon);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.86rem}
+.skin i{width:14px;height:14px;border-radius:50%;display:block}
+.skin[aria-pressed="true"]{border-color:var(--lantern)}
+.phone{width:min(360px,100%);background:var(--q-bg);color:var(--q-ink);border:1px solid var(--line);border-radius:30px;padding:18px 18px 22px;min-height:520px;display:flex;flex-direction:column;box-shadow:0 30px 60px -30px rgba(0,0,0,.7);transition:background .25s,color .25s}
+.q-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.84rem;padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--q-ink) 16%,transparent)}
+.logo{border:1.5px dashed var(--q-accent);color:var(--q-accent);border-radius:8px;padding:2px 10px;font-weight:600;font-size:.8rem}
+.screen{flex:1;display:flex;flex-direction:column;gap:12px;padding-top:16px}
+.screen[hidden]{display:none}
+.q-title{font-family:var(--display);font-size:1.55rem;font-weight:700}
+.q-sub{opacity:.78;font-size:.92rem}
+.field{display:grid;gap:5px;font-size:.88rem}
+.field input{font:inherit;background:var(--q-card);color:var(--q-ink);border:1px solid color-mix(in srgb,var(--q-ink) 20%,transparent);border-radius:10px;padding:10px 12px;width:100%}
+.q-btn{background:var(--q-accent);color:var(--q-on);border:0;border-radius:12px;padding:13px;font-weight:700;width:100%;margin-top:auto}
+.q-btn:hover{filter:brightness(1.06)}
+.q-btn.alt{background:transparent;color:var(--q-ink);border:1px solid color-mix(in srgb,var(--q-ink) 30%,transparent);margin-top:auto}
+.dots{display:flex;gap:6px}
+.dots i{flex:1;height:4px;border-radius:9px;background:color-mix(in srgb,var(--q-ink) 14%,transparent)}
+.dots i.done{background:var(--q-accent)}
+.dots i.now{background:color-mix(in srgb,var(--q-accent) 55%,transparent)}
+.meta{display:flex;justify-content:space-between;font-size:.86rem;opacity:.88;font-variant-numeric:tabular-nums}
+.timer{display:flex;align-items:center;gap:10px}
+.timer b{font-size:.86rem;font-variant-numeric:tabular-nums;min-width:1.4em;text-align:end}
+.bar{flex:1;height:6px;border-radius:99px;background:color-mix(in srgb,var(--q-ink) 14%,transparent);overflow:hidden}
+.bar span{display:block;height:100%;width:100%;background:var(--q-accent);transition:width 1s linear}
+.cat{font-size:.8rem;color:var(--q-accent);font-weight:600}
+.question{font-size:1.2rem;font-weight:600;line-height:1.5;min-height:3em}
+.opts{display:grid;gap:9px}
+.opt{text-align:start;background:var(--q-card);color:var(--q-ink);border:1px solid color-mix(in srgb,var(--q-ink) 10%,transparent);border-radius:12px;padding:12px 14px;font-weight:500}
+.opt:hover:not(:disabled){border-color:var(--q-accent)}
+.opt:disabled{cursor:default}
+.opt.right{background:color-mix(in srgb,var(--good) 30%,var(--q-card));border-color:var(--good)}
+.opt.wrong{background:color-mix(in srgb,var(--bad) 28%,var(--q-card));border-color:var(--bad)}
+.fb{min-height:1.7em;font-size:.9rem;font-weight:600;text-align:center}
+.fb.ok{color:color-mix(in srgb,var(--good) 72%,var(--q-ink))}
+.fb.no{color:color-mix(in srgb,var(--bad) 72%,var(--q-ink))}
+.big{font-family:var(--display);font-size:3rem;font-weight:700;color:var(--q-accent);line-height:1.1;font-variant-numeric:tabular-nums}
+.rank{font-size:.94rem}
+.tabs{display:flex;gap:6px}
+.tabs[hidden]{display:none}
+.tab{flex:1;background:transparent;color:var(--q-ink);border:1px solid color-mix(in srgb,var(--q-ink) 28%,transparent);border-radius:9px;padding:6px;font-size:.84rem}
+.tab[aria-pressed="true"]{background:var(--q-accent);color:var(--q-on);border-color:transparent;font-weight:600}
+.board{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.92rem}
+.board li{display:flex;justify-content:space-between;gap:10px;background:var(--q-card);border-radius:10px;padding:8px 12px;font-variant-numeric:tabular-nums}
+.board li.me{outline:2px solid var(--q-accent)}
+.board.mini{font-size:.86rem;gap:5px}
+.board.mini li{padding:6px 12px}
+.top-label{font-size:.82rem;margin-top:6px}
+.board li.gap{background:transparent;justify-content:center;padding:0;opacity:.6;line-height:1}
+.note{font-size:.78rem;opacity:.68;text-align:center}
+.caption{font-size:.85rem;color:var(--haze);text-align:center;max-width:340px}
+
+section.band{padding:52px 0;border-top:1px solid var(--line);scroll-margin-top:8px}
+section.band h2{font-size:clamp(1.5rem,3.6vw,2rem);margin-bottom:10px}
+.sub{color:var(--haze);max-width:44em;margin-bottom:26px}
+h2 + .steps,h2 + .plans,h2 + .faq,h2 + .honest{margin-top:26px}
+.steps,.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:var(--dusk);border:1px solid var(--line);border-radius:16px;padding:22px}
+.step b{display:block;font-family:var(--display);color:var(--lantern);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.step h3,.plan h3{font-size:1.15rem;margin:6px 0 8px}
+.step p,.plan p,.plan li{color:var(--haze);font-size:.96rem}
+.plan{background:var(--dusk);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:8px}
+.plan.mid{border-color:var(--lantern)}
+.price{font-family:var(--display);font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums}
+.price small{font-family:var(--body);font-size:.85rem;color:var(--haze);font-weight:400}
+.plan ul{margin:6px 0 0;padding-inline-start:1.1em;display:grid;gap:4px}
+.fine{color:var(--haze);font-size:.9rem;margin-top:18px;max-width:60em}
+
+.dash{background:var(--dusk);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.dash-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);font-size:.88rem;color:var(--haze)}
+.dash-bar .logo{border-color:var(--lantern);color:var(--lantern)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.tile{background:var(--dusk);padding:16px 18px}
+.tile b{display:block;font-family:var(--display);font-size:1.7rem;line-height:1.3;font-variant-numeric:tabular-nums}
+.tile span{color:var(--haze);font-size:.84rem}
+.dash-cols{display:grid;grid-template-columns:1.1fr .9fr;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.dash-cols > div{background:var(--dusk);padding:18px;display:flex;flex-direction:column;align-items:stretch}
+.dash-cols .export{align-self:flex-start}
+.dash h3{font-family:var(--body);font-size:.9rem;font-weight:500;color:var(--haze);margin-bottom:30px}
+.dash .dash-list h3{margin-bottom:12px}
+.bars{display:flex;align-items:flex-end;gap:10px;flex:1;min-height:120px;border-bottom:1px solid var(--line)}
+.bars span{flex:1;background:color-mix(in srgb,var(--lantern) 34%,var(--dusk));border-radius:5px 5px 0 0;position:relative}
+.bars span:last-child{background:var(--lantern)}
+.bars span b{position:absolute;top:-1.6em;inset-inline:0;text-align:center;font-size:.76rem;font-weight:600;color:var(--haze);font-variant-numeric:tabular-nums}
+.bars span:last-child b{color:var(--moon)}
+.win{list-style:none;margin:0;padding:0;font-size:.92rem;font-variant-numeric:tabular-nums}
+.win li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.export{display:inline-block;margin-top:14px;border:1px dashed var(--line);border-radius:9px;padding:5px 12px;font-size:.84rem;color:var(--haze)}
+
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:26px 40px}
+.faq h3{font-size:1.05rem;margin-bottom:6px}
+.faq p{color:var(--haze);font-size:.96rem}
+.honest{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.honest div{background:var(--dusk);border:1px solid var(--line);border-radius:16px;padding:22px}
+.honest h3{font-size:1.1rem;margin-bottom:8px}
+.honest p{color:var(--haze);font-size:.96rem}
+.contact{text-align:center}
+.contact .lede{margin-inline:auto}
+.mail{font-size:clamp(1.1rem,4.2vw,1.6rem);font-weight:600;direction:ltr;unicode-bidi:isolate;overflow-wrap:anywhere;display:inline-block;margin:14px 0 8px;text-decoration:none;border-bottom:2px solid color-mix(in srgb,var(--lantern) 45%,transparent)}
+.contact .fine{margin-inline:auto}
+footer{padding:26px 0 40px;color:var(--haze);font-size:.85rem;text-align:center;border-top:1px solid var(--line);display:grid;gap:6px}
+footer a{color:var(--haze)}
+footer a:hover{color:var(--lantern)}
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;gap:34px;padding-top:12px}
+  .steps,.plans,.honest,.faq,.dash-cols{grid-template-columns:1fr}
+  .tiles{grid-template-columns:1fr 1fr}
+  .btn.try{display:inline-block}
+  .cta .btn.plans-link{background:transparent;color:var(--moon);border:1px solid var(--line)}
+  section.band{padding:40px 0}
+}
+@media (prefers-reduced-motion:reduce){.bar span,.phone{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="mark">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="16" width="6" height="12" rx="2" fill="#ff8f66"/><rect x="13" y="6" width="6" height="22" rx="2" fill="#ff8f66"/><rect x="22" y="11" width="6" height="17" rx="2" fill="#ff8f66"/></svg>
+      <span>Grassworks &amp; Co</span>
+    </div>
+    <button class="lang" id="langBtn" type="button" hidden></button>
+  </header>
+
+  <main>
+  <div class="hero">
+    <div>
+      <span class="status" data-t="status"></span>
+      <h1 data-t="h1"></h1>
+      <p class="lede" data-t="lede"></p>
+      <ul class="points">
+        <li data-t="p1"></li>
+        <li data-t="p2"></li>
+        <li data-t="p3"></li>
+        <li data-t="p4"></li>
+      </ul>
+      <div class="cta">
+        <a class="btn try" href="#demo" data-t="ctaTry"></a>
+        <a class="btn plans-link" href="#plans" data-t="cta1"></a>
+        <a class="btn ghost" href="#contact" data-t="cta2"></a>
+      </div>
+    </div>
+
+    <div class="demo" id="demo">
+      <div class="skins" role="group" id="skins">
+        <span data-t="skinLabel"></span>
+        <button class="skin" type="button" data-skin="0" aria-pressed="true"><i></i><span data-t="skin1"></span></button>
+        <button class="skin" type="button" data-skin="1" aria-pressed="false"><i></i><span data-t="skin2"></span></button>
+        <button class="skin" type="button" data-skin="2" aria-pressed="false"><i></i><span data-t="skin3"></span></button>
+      </div>
+
+      <div class="phone" id="phone">
+        <div class="q-head"><span class="logo" data-t="logo"></span><span data-t="day"></span></div>
+
+        <div class="screen" id="sWelcome">
+          <div class="q-title" data-t="qTitle"></div>
+          <p class="q-sub" data-t="qSub"></p>
+          <label class="field" for="pName"><span data-t="fName"></span><input id="pName" type="text" autocomplete="off" maxlength="24"></label>
+          <p class="q-sub top-label" data-t="topLabel"></p>
+          <ol class="board mini" id="top3"></ol>
+          <button class="q-btn" id="startBtn" type="button" data-t="start"></button>
+          <p class="note" data-t="demoNote"></p>
+        </div>
+
+        <div class="screen" id="sQuiz" hidden>
+          <div class="dots" id="dots" aria-hidden="true"></div>
+          <div class="meta"><span id="qNum"></span><span id="qScore"></span></div>
+          <div class="timer"><div class="bar"><span id="timeBar"></span></div><b id="qTime"></b></div>
+          <div class="cat" id="qCat"></div>
+          <div class="question" id="qText" aria-live="polite"></div>
+          <div class="opts" id="qOpts"></div>
+          <div class="fb" id="qFb" role="status"></div>
+        </div>
+
+        <div class="screen" id="sEnd" hidden>
+          <p class="q-sub" data-t="yourScore"></p>
+          <div class="big" id="finalScore">0</div>
+          <p class="rank" id="rankLine"></p>
+          <div class="tabs" id="tabs" hidden>
+            <button class="tab" type="button" data-tab="players" aria-pressed="true" data-t="tabPlayers"></button>
+            <button class="tab" type="button" data-tab="teams" aria-pressed="false" data-t="tabTeams"></button>
+          </div>
+          <ol class="board" id="board"></ol>
+          <p class="note" data-t="sample"></p>
+          <button class="q-btn alt" id="againBtn" type="button" data-t="again"></button>
+        </div>
+      </div>
+      <p class="caption" data-t="caption"></p>
+    </div>
+  </div>
+
+  <section class="band">
+    <h2 data-t="howH"></h2>
+    <div class="steps">
+      <div class="step"><b>1</b><h3 data-t="s1h"></h3><p data-t="s1p"></p></div>
+      <div class="step"><b>2</b><h3 data-t="s2h"></h3><p data-t="s2p"></p></div>
+      <div class="step"><b>3</b><h3 data-t="s3h"></h3><p data-t="s3p"></p></div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2 data-t="dashH"></h2>
+    <p class="sub" data-t="dashP"></p>
+    <div class="dash">
+      <div class="dash-bar"><span class="logo" data-t="logo"></span><span><span data-t="dashTitle"></span> · <span data-t="day"></span></span></div>
+      <div class="tiles">
+        <div class="tile"><b id="tile0"></b><span data-t="tile1"></span></div>
+        <div class="tile"><b id="tile1"></b><span data-t="tile2"></span></div>
+        <div class="tile"><b id="tile2"></b><span data-t="tile3"></span></div>
+        <div class="tile"><b id="tile3"></b><span data-t="tile4"></span></div>
+      </div>
+      <div class="dash-cols">
+        <div><h3 data-t="chartLabel"></h3><div class="bars" id="bars" aria-hidden="true"></div></div>
+        <div class="dash-list"><h3 data-t="winnersLabel"></h3><ol class="win" id="win"></ol><span class="export" data-t="exportLabel"></span></div>
+      </div>
+    </div>
+    <p class="fine" data-t="dashFine"></p>
+  </section>
+
+  <section class="band" id="plans">
+    <h2 data-t="plansH"></h2>
+    <div class="plans">
+      <div class="plan"><h3 data-t="a_h"></h3><div class="price">$150 <small data-t="perMonth"></small></div><p data-t="a_p"></p>
+        <ul><li data-t="a_1"></li><li data-t="a_2"></li><li data-t="a_3"></li></ul></div>
+      <div class="plan mid"><h3 data-t="b_h"></h3><div class="price">$300 <small data-t="perMonth"></small></div><p data-t="b_p"></p>
+        <ul><li data-t="b_1"></li><li data-t="b_2"></li><li data-t="b_3"></li></ul></div>
+      <div class="plan"><h3 data-t="c_h"></h3><div class="price">$500 <small data-t="perMonth"></small></div><p data-t="c_p"></p>
+        <ul><li data-t="c_1"></li><li data-t="c_2"></li><li data-t="c_3"></li></ul></div>
+    </div>
+    <p class="fine" data-t="plansFine"></p>
+  </section>
+
+  <section class="band">
+    <h2 data-t="faqH"></h2>
+    <div class="faq">
+      <div><h3 data-t="f1q"></h3><p data-t="f1a"></p></div>
+      <div><h3 data-t="f2q"></h3><p data-t="f2a"></p></div>
+      <div><h3 data-t="f3q"></h3><p data-t="f3a"></p></div>
+      <div><h3 data-t="f4q"></h3><p data-t="f4a"></p></div>
+      <div><h3 data-t="f5q"></h3><p data-t="f5a"></p></div>
+      <div><h3 data-t="f6q"></h3><p data-t="f6a"></p></div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2 data-t="honH"></h2>
+    <div class="honest">
+      <div><h3 data-t="h1h"></h3><p data-t="h1p"></p></div>
+      <div><h3 data-t="h2h"></h3><p data-t="h2p"></p></div>
+    </div>
+  </section>
+
+  <section class="band contact" id="contact">
+    <h2 data-t="conH"></h2>
+    <p class="lede" data-t="conP"></p>
+    <a class="mail" id="mail" href="mailto:grassworksandco@gmail.com">grassworksandco@gmail.com</a>
+    <p class="fine" data-t="conF"></p>
+  </section>
+  </main>
+
+  <footer>
+    <div>Grassworks &amp; Co · <span data-t="foot"></span></div>
+    <div id="others"></div>
+  </footer>
+</div>
+
+<script>
+const CFG = {"lang": "en", "langs": ["en"], "t": {"en": {"p2": "Opens from a link you post in chat or email. No app to install.", "ctaTry": "Try the demo", "cta1": "Packages and prices", "cta2": "Contact us", "skinLabel": "Try it in other colors:", "logo": "Your logo", "qSub": "5 sample questions · 15 seconds each", "fName": "Name", "demoNote": "Demo: nothing you type is saved.", "topLabel": "Today's leaders (examples)", "yourScore": "Your score this round", "sample": "Names and scores on the board are examples.", "again": "Play again", "caption": "This is a playable demo. The full version carries your brand and runs for the full four weeks.", "tabPlayers": "Players", "tabTeams": "Departments", "howH": "How it works", "s1h": "Send your logo and colors", "s1p": "We set up your quiz in your brand, with your own questions if you want them.", "s2h": "Share one link", "s3h": "Get your winner list", "s3p": "Daily and overall rankings, and a ready file of top players for your prizes.", "dashH": "What you see as the organizer", "dashP": "Follow participation day by day and export your winner list when the league ends.", "dashTitle": "Organizer dashboard", "tile1": "Players signed up", "tile2": "Played today", "tile3": "Average score", "tile4": "Days left", "chartLabel": "Players per day, last 7 days", "winnersLabel": "Top players", "exportLabel": "Export winner list (CSV)", "dashFine": "Preview with sample data. The dashboard is part of the full version.", "a_1": "Your branding", "a_2": "Leaderboard", "a_3": "Winner list", "b_1": "Everything in the first package", "b_2": "Custom questions about your company", "c_1": "Everything in the second package", "plansFine": "Pre-launch prices for a small number of early partners. Prizes are provided and awarded by your organization under its own terms. Agencies and event companies: you can offer the quiz to your clients. Write to us for details.", "faqH": "Common questions", "f1q": "How do players join?", "f1a": "You share one link in chat or email. Players enter a name and work email, pick their department and get one attempt per day.", "f2q": "How do you keep it fair?", "f2a": "In the full version, scores are calculated on our server and answers are never sent to a player's phone in advance. Each player gets one attempt per day, and faster correct answers score higher.", "f3q": "What do you need from us?", "f3a": "Your logo, your brand colors and your prize details, at least one week before the start date. Custom questions are optional.", "f4q": "What player data do you keep?", "f4a": "Only the name and sign-in detail needed to run the league and build your winner list. We don't sell it or use it for anything else, and we delete it after the league if you ask. Contact lists include only players who agree to be contacted.", "f5q": "Who handles the prizes?", "f5a": "You do. You choose the prizes and the rules, and we give you the ranked winner list to award them.", "f6q": "Which languages are available?", "f6a": "The quiz runs in English. Ask us if you need another language.", "honH": "Where we are", "h1h": "Ready today", "h2h": "Ready before launch", "conP": "Write to us and we will answer in writing with full details.", "conF": "We reply by email within one working day.", "foot": "Jordan", "othersLabel": "Other editions:", "qOf": "Question {i} of {n}", "pts": "Score {s}", "you": "You", "guest": "Guest", "rank": "You rank {r} of {p}", "correctOf": "{c} of {n} correct", "fbRight": "Correct · +{p} points", "fbWrong": "Not quite", "fbTime": "Time's up", "langBtn": "العربية", "status": "Pre-launch · first leagues start February 2027", "h1": "A four-week trivia league under your company's name", "lede": "We run a branded daily quiz for your team for four weeks. Departments compete, the leaderboard updates live, and you get the winner list. Your logo, your colors, your prizes.", "p1": "10 new questions every workday, one attempt per player.", "p3": "Live leaderboard by person and by department.", "p4": "Add questions about your own company, products or onboarding material.", "skin1": "Coral", "skin2": "Blue", "skin3": "Yellow", "day": "Week 2 · Day 3", "qTitle": "Team Trivia League", "start": "Start today's round", "s2p": "Players sign in with a name and work email, pick their department and play the day's round.", "plansH": "League packages", "perMonth": "per four-week league", "a_h": "Team", "a_p": "For teams of up to 100 staff.", "b_h": "Company", "b_p": "For companies of up to 500 staff.", "b_3": "Rankings by department or office", "c_h": "Customers", "c_p": "A public league for your customers or community.", "c_2": "Public share link", "c_3": "List of players who agree to be contacted", "h1p": "This playable demo, the product design, and a bank of more than 1,200 reviewed general-knowledge questions in English.", "h2p": "The full version with player sign-in, scoring on the server and a dashboard for each company. First leagues start in February 2027.", "conH": "Is this a fit for your company?", "mailSubject": "Team trivia league"}}, "q": [{"cat": "Science", "q": "Which planet is closest to the Sun?", "o": ["Venus", "Mercury", "Mars", "Earth"], "a": 1}, {"cat": "History", "q": "In which year did Apollo 11 land on the Moon?", "o": ["1965", "1967", "1969", "1972"], "a": 2}, {"cat": "Geography", "q": "Which is the world's largest ocean?", "o": ["Atlantic", "Indian", "Arctic", "Pacific"], "a": 3}, {"cat": "Science", "q": "Which element has the chemical symbol O?", "o": ["Oxygen", "Gold", "Osmium", "Iron"], "a": 0}, {"cat": "Sports", "q": "How many players does a soccer team have on the field?", "o": ["9", "10", "11", "12"], "a": 2}], "skins": [{"bg": "#0f2a30", "card": "#19414a", "accent": "#ff8f66", "ink": "#eef6f4", "on": "#2b0f04"}, {"bg": "#f6f5f1", "card": "#ffffff", "accent": "#3246c8", "ink": "#151a33", "on": "#ffffff"}, {"bg": "#1b1b1f", "card": "#2b2b33", "accent": "#e8c547", "ink": "#f4f2ea", "on": "#1b1b1f"}], "sample": [{"n": "Maya", "s": 720}, {"n": "Chris", "s": 655}, {"n": "Priya", "s": 590}, {"n": "Sam", "s": 480}, {"n": "Elena", "s": 365}], "dash": {"tiles": [126, 94, 512, 12], "totals": [8640, 8410, 8275, 7990, 7820], "bars": [62, 71, 80, 77, 88, 91, 94]}, "others": [{"label": {"ar": "رمضان (بالعربية)", "en": "Ramadan (Arabic)"}, "href": "../ramadan/"}, {"label": {"ar": "رمضان (بالإنجليزية)", "en": "Ramadan (English)"}, "href": "../ramadan-en/"}, {"label": {"ar": "رأس السنة القمرية", "en": "Lunar New Year"}, "href": "../lunar/"}], "teams": [{"n": "Engineering", "s": 548}, {"n": "Sales", "s": 531}, {"n": "Support", "s": 502}, {"n": "Marketing", "s": 476}]};
+const TIME = 15, PLAYERS = 126;
+let lang = CFG.lang, idx = 0, score = 0, right = 0, left = TIME, timer = null, locked = false, picked = -1, lastPts = 0, boardTab = "players";
+const $ = id => document.getElementById(id);
+const L = () => CFG.t[lang];
+const fmt = (s, o) => s.replace(/\{(\w+)\}/g, (_, k) => o[k]);
+const tx = v => (v && typeof v === "object" && !Array.isArray(v)) ? (v[lang] !== undefined ? v[lang] : v[CFG.lang]) : v;
+const num = n => n.toLocaleString("en-US");
+
+function scoreFor(correct, secondsLeft){ return correct ? 100 + secondsLeft * 4 : 0; }
+
+const FIELD = CFG.sample.map(r => r.s).concat(Array.from({length: PLAYERS - 1 - CFG.sample.length}, (_, i) => Math.round(350 - i * (310 / (PLAYERS - 2 - CFG.sample.length)))));
+function rankFor(s){ return 1 + FIELD.filter(v => v > s).length; }
+
+function show(id){ ["sWelcome","sQuiz","sEnd"].forEach(s => { $(s).hidden = s !== id; }); }
+
+function renderStatic(){
+  CFG.dash.tiles.forEach((v, i) => { $("tile" + i).textContent = num(v); });
+  const win = $("win"); win.textContent = "";
+  CFG.sample.forEach((r, i) => {
+    const li = document.createElement("li"), a = document.createElement("span"), b = document.createElement("span");
+    a.textContent = (i + 1) + ". " + tx(r.n); b.textContent = num(CFG.dash.totals[i]);
+    li.append(a, b); win.appendChild(li);
+  });
+  const top3 = $("top3"); top3.textContent = "";
+  CFG.sample.slice(0, 3).forEach((r, i) => top3.appendChild(row((i + 1) + ". " + tx(r.n), r.s)));
+  const others = $("others"); others.textContent = "";
+  if (CFG.others && CFG.others.length){
+    others.append(L().othersLabel + " ");
+    CFG.others.forEach((o, i) => {
+      let el;
+      if (o.href){ el = document.createElement("a"); el.href = o.href; } else { el = document.createElement("span"); }
+      el.textContent = tx(o.label);
+      if (i) others.append(" · ");
+      others.appendChild(el);
+    });
+  }
+  $("mail").href = "mailto:grassworksandco@gmail.com?subject=" + encodeURIComponent(L().mailSubject);
+}
+
+function applyLang(){
+  const d = L(), html = document.documentElement;
+  html.lang = lang; html.dir = lang === "ar" ? "rtl" : "ltr";
+  document.querySelectorAll("[data-t]").forEach(el => { if (d[el.dataset.t] !== undefined) el.textContent = d[el.dataset.t]; });
+  if (CFG.langs.length > 1){ $("langBtn").hidden = false; $("langBtn").textContent = d.langBtn; }
+  $("skins").setAttribute("aria-label", d.skinLabel);
+  renderStatic();
+  if (!$("sQuiz").hidden) renderQuestion();
+  if (!$("sEnd").hidden) renderEnd();
+}
+
+function renderQuestion(){
+  const d = L(), q = CFG.q[idx], n = CFG.q.length;
+  $("qNum").textContent = fmt(d.qOf, {i: idx + 1, n});
+  $("qScore").textContent = fmt(d.pts, {s: score});
+  $("qTime").textContent = left;
+  $("qCat").textContent = tx(q.cat);
+  $("qText").textContent = tx(q.q);
+  const dots = $("dots"); dots.textContent = "";
+  for (let i = 0; i < n; i++){ const el = document.createElement("i"); el.className = i < idx ? "done" : i === idx ? "now" : ""; dots.appendChild(el); }
+  const box = $("qOpts"); box.textContent = "";
+  tx(q.o).forEach((text, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = text; b.disabled = locked;
+    b.className = "opt" + (locked && i === q.a ? " right" : "") + (locked && i === picked && i !== q.a ? " wrong" : "");
+    b.addEventListener("click", () => answer(i));
+    box.appendChild(b);
+  });
+  const fb = $("qFb");
+  if (!locked){ fb.textContent = ""; fb.className = "fb"; }
+  else if (picked === q.a){ fb.textContent = fmt(d.fbRight, {p: lastPts}); fb.className = "fb ok"; }
+  else { fb.textContent = picked < 0 ? d.fbTime : d.fbWrong; fb.className = "fb no"; }
+}
+function setBar(pct, instant){
+  const bar = $("timeBar");
+  if (instant){ bar.style.transition = "none"; bar.style.width = pct + "%"; void bar.offsetWidth; bar.style.transition = ""; }
+  else bar.style.width = pct + "%";
+}
+function tick(){
+  if (document.hidden) return;
+  left -= 1;
+  $("qTime").textContent = Math.max(left, 0);
+  setBar(left / TIME * 100);
+  if (left <= 0) answer(-1);
+}
+function startQuestion(){
+  locked = false; picked = -1; left = TIME;
+  setBar(100, true);
+  renderQuestion();
+  clearInterval(timer); timer = setInterval(tick, 1000);
+}
+function answer(i){
+  if (locked) return;
+  locked = true; picked = i; clearInterval(timer);
+  const q = CFG.q[idx];
+  lastPts = scoreFor(i === q.a, Math.max(left, 0));
+  score += lastPts; if (i === q.a) right += 1;
+  renderQuestion();
+  setTimeout(() => {
+    idx += 1;
+    if (idx < CFG.q.length) startQuestion(); else { boardTab = "players"; show("sEnd"); renderEnd(); }
+  }, 1300);
+}
+function row(label, value, cls){
+  const li = document.createElement("li"); if (cls) li.className = cls;
+  if (cls === "gap"){ li.textContent = "···"; return li; }
+  const a = document.createElement("span"), b = document.createElement("span");
+  a.textContent = label; b.textContent = value; li.append(a, b); return li;
+}
+function renderEnd(){
+  const d = L(), n = CFG.q.length, rank = rankFor(score);
+  const name = $("pName").value.trim() || d.guest;
+  $("finalScore").textContent = score;
+  $("rankLine").textContent = fmt(d.correctOf, {c: right, n}) + " · " + fmt(d.rank, {r: rank, p: PLAYERS});
+  $("tabs").hidden = !CFG.teams;
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-pressed", String(t.dataset.tab === boardTab)));
+  const ol = $("board"); ol.textContent = "";
+  if (CFG.teams && boardTab === "teams"){
+    CFG.teams.forEach((t, i) => ol.appendChild(row((i + 1) + ". " + tx(t.n), t.s)));
+    return;
+  }
+  const me = {n: name + " (" + d.you + ")", s: score, me: true};
+  if (rank <= CFG.sample.length + 1){
+    CFG.sample.map(r => ({n: tx(r.n), s: r.s})).concat([me]).sort((a, b) => b.s - a.s || (a.me ? -1 : 1))
+      .forEach((r, i) => ol.appendChild(row((i + 1) + ". " + r.n, r.s, r.me ? "me" : "")));
+  } else {
+    CFG.sample.forEach((r, i) => ol.appendChild(row((i + 1) + ". " + tx(r.n), r.s)));
+    ol.appendChild(row("", "", "gap"));
+    ol.appendChild(row(rank + ". " + me.n, me.s, "me"));
+  }
+}
+function start(){ idx = 0; score = 0; right = 0; show("sQuiz"); startQuestion(); }
+function applySkin(i){
+  const s = CFG.skins[i], st = $("phone").style;
+  st.setProperty("--q-bg", s.bg); st.setProperty("--q-card", s.card); st.setProperty("--q-accent", s.accent);
+  st.setProperty("--q-ink", s.ink); st.setProperty("--q-on", s.on);
+  document.querySelectorAll(".skin").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.skin) === i)));
+}
+
+$("startBtn").addEventListener("click", start);
+$("pName").addEventListener("keydown", e => { if (e.key === "Enter") start(); });
+$("againBtn").addEventListener("click", () => { clearInterval(timer); show("sWelcome"); });
+$("langBtn").addEventListener("click", () => { lang = CFG.langs[(CFG.langs.indexOf(lang) + 1) % CFG.langs.length]; applyLang(); });
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => { boardTab = t.dataset.tab; renderEnd(); }));
+document.querySelectorAll(".skin").forEach(btn => {
+  btn.querySelector("i").style.background = CFG.skins[Number(btn.dataset.skin)].accent;
+  btn.addEventListener("click", () => applySkin(Number(btn.dataset.skin)));
+});
+(function(){
+  const bars = $("bars"), max = Math.max.apply(null, CFG.dash.bars);
+  CFG.dash.bars.forEach(v => { const s = document.createElement("span"), b = document.createElement("b"); s.style.height = (v / max * 100) + "%"; b.textContent = v; s.appendChild(b); bars.appendChild(s); });
+})();
+applyLang();
+</script>
+</body>
+</html>
